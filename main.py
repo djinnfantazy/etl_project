@@ -1,8 +1,6 @@
 from pyspark.sql import *
 from pyspark import SparkConf
 from library.logger import Log4j
-from library.utils import get_spark_app_config
-from library.DataGen import *
 from library.DataLoad import *
 
 
@@ -12,7 +10,6 @@ if __name__ == "__main__":
     conf = SparkConf()
     conf.set("spark.app.name", "newsproject")
     conf.set("spark.master", "local[3]")
-    # conf = get_spark_app_config()
     spark = SparkSession.builder \
         .config(conf=conf) \
         .getOrCreate()
