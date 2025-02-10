@@ -1,6 +1,6 @@
 import os
 import requests
-class NewsApiExtract():
+class NewsApiExtract:
 
     def get_api_key(self) -> str:
         """
@@ -36,6 +36,6 @@ class NewsApiExtract():
         headers = self.get_header(api_key)
         response = requests.get(url, headers=headers)
         if response.json()["status"] == "error":
-            raise requests.exceptions.HTTPError(response["message"])
+            raise requests.exceptions.HTTPError(response.json()["message"])
         articles = response.json()['articles']
         return articles
