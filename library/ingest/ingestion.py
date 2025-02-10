@@ -1,5 +1,5 @@
 from pyspark.sql import DataFrame
-class NewsAPIIngest():
+class Ingest:
 
     def overwrite_parquet(self, df : DataFrame, output_path = 'landing_zone') -> None:
         """
