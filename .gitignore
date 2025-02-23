@@ -1,3 +1,7 @@
 landing_zone
 .idea/.iws
 .idea/workspace.xml
+library/__pycache__
+schemas/__pycache__
+library/ingest/__pycache__
+library/schemas/__pycache__
