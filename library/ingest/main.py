@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from library.logger import Log4j
-from library.data_transormation import NewsApiLandingTransform
+from library.data_transformation import NewsApiLandingTransform
 from library.api_extract import NewsApiExtract
 from library.ingest.ingestion import Ingest
 
