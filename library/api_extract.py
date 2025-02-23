@@ -1,5 +1,8 @@
 import os
 import requests
+from typing import Any
+
+
 class NewsApiExtract:
 
     def get_api_key(self) -> str:
@@ -19,23 +22,18 @@ class NewsApiExtract:
 
         return "https://newsapi.org/v2/"
     
-    def get_header(self, api_key : str) -> dict[str, str]:
-        """
-        Get the header required for the API request.
-        """
-        return {'X-Api-Key' : api_key}
+    def get_header(self) -> dict[str, str]:
+        """Get the header required for the API request."""
+
+        return {"X-Api-Key" : self.get_api_key()}
     
-    def get_data(self, endpoint : str = 'top-headlines', country : str = 'us') -> dict[str, str]:
-        """
-        Retrieve top headlines from News API
-        by the 'articles' key as a JSON object.
-        """
-        url_base = self.get_url_base()
-        url = f"{url_base}{endpoint}?country={country}"
-        api_key = self.get_api_key()
-        headers = self.get_header(api_key)
-        response = requests.get(url, headers=headers)
-        if response.json()["status"] == "error":
-            raise requests.exceptions.HTTPError(response.json()["message"])
-        articles = response.json()['articles']
-        return articles
+    def get_data(self, endpoint: str) -> Any:
+        """Retrieve endpoint data from News API"""
+
+        url = f"{self.get_url_base()}{endpoint}?country=us"
+        headers = self.get_header()
+        response = requests.get(url, headers=headers).json()
+        if response["status"] == "error":
+            raise requests.exceptions.HTTPError(response["message"])
+
+        return response
