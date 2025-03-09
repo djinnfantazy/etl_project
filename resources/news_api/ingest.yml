@@ -1,4 +1,4 @@
-top_headlines:
+top-headlines:
   endpoint: top-headlines,
   json_data_path: [articles]
   schema: >

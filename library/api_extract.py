@@ -2,7 +2,6 @@ import os
 import requests
 from typing import Any
 
-
 class NewsApiExtract:
 
     def get_api_key(self) -> str:
@@ -29,10 +28,8 @@ class NewsApiExtract:
     
     def get_data(self, endpoint: str) -> Any:
         """Retrieve endpoint data from News API"""
-
-        url = f"{self.get_url_base()}{endpoint}?country=us"
-        headers = self.get_header()
-        response = requests.get(url, headers=headers).json()
+        url = f"{self.get_url_base()}{endpoint}?country=us&apiKey={self.get_api_key()}"
+        response = requests.get(url).json()
         if response["status"] == "error":
             raise requests.exceptions.HTTPError(response["message"])
 
