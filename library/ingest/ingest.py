@@ -2,11 +2,12 @@ from pydantic import BaseModel
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
 from pyspark.sql.types import _parse_datatype_string, StructType
-
+import yaml
+import os
 
 class Ingest:
 
-    def overwrite_parquet(self, df : DataFrame, output_path = 'landing_zone') -> None:
+     def overwrite_delta(self, df : DataFrame, output_path = 'landing_zone') -> None:
         """
         Write the dataframe to parquet files
         in the landing zone.
@@ -14,13 +15,11 @@ class Ingest:
         df.write \
             .option("overwriteSchema", "true") \
             .mode("overwrite") \
-            .parquet(output_path)
+            .format("delta") \
+            .save(output_path)
         
-
 class IngestConfig(BaseModel):
+    """ A class used to store config values """
     endpoint: str
-    json_data_path: list[str]
+    json_data_path: list[str] 
     schema: str
-
-    def get_struct_schema(self, spark: SparkSession) -> StructType:
-        _parse_datatype_string(self.schema)
