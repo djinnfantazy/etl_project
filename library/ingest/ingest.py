@@ -23,3 +23,9 @@ class IngestConfig(BaseModel):
     endpoint: str
     json_data_path: list[str] 
     schema: str
+
+    @staticmethod
+    def get_struct_schema(schema : str) -> StructType:
+        ''' Parses a schema from the config file to be later used in dataframe creation'''
+        schema_str = _parse_datatype_string(schema)
+        return schema_str
