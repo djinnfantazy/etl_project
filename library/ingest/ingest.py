@@ -7,7 +7,7 @@ import os
 
 class Ingest:
 
-     def overwrite_delta(self, df : DataFrame, output_path = 'landing_zone') -> None:
+     def overwrite_delta(self, df : DataFrame, partitionBy : str, output_path = 'landing_zone') -> None:
         """
         Write the dataframe to parquet files
         in the landing zone.
@@ -16,6 +16,7 @@ class Ingest:
             .option("overwriteSchema", "true") \
             .mode("overwrite") \
             .format("delta") \
+            .partitionBy(partitionBy) \
             .save(output_path)
         
 class IngestConfig(BaseModel):
