@@ -1,5 +1,4 @@
 from pyspark.sql.session import SparkSession
-from pyspark.pandas import read_delta
 from pyspark.sql.functions import current_date
 from library.logger import Log4j
 from library.api_extract import NewsApiExtract
@@ -13,21 +12,6 @@ DATASET = "top-headlines"
 
 from delta.tables import *
 from delta import configure_spark_with_delta_pip
-
-# spark = (
-#     SparkSession
-#     .builder
-#     .appName("NewsAPIProject")
-#     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-#     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-#     .config("spark.master", "local[3]"))
-
-
-# spark = configure_spark_with_delta_pip(spark, ["io.delta:delta-core_2.12:2.4.0", 
-#                                                "io.delta:delta-storage:2.4.0"]).getOrCreate()
-
-# spark.sparkContext.addPyFile("C:\\spark-3.4.4\\jars\\delta-storage-2.4.0.jar")
-
 
 spark_builder = (
     SparkSession
@@ -52,11 +36,12 @@ df = (
     IngestConfig.get_struct_schema(ingest_config.schema))
     .withColumn("_createdOn", current_date())
     )
+
 df.show(10)
 
 Ingest().overwrite_delta(df = df, partitionBy="publishedAt")
 
-d = spark.read.format("delta").load("landing_zone")
+d = spark.read.format("delta").load("data\\bronze_layer")
 d.show(10)
 
 logger.info("Finishing the NewsProject")
