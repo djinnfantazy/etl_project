@@ -1,9 +1,6 @@
 from pydantic import BaseModel
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql.session import SparkSession
 from pyspark.sql.types import _parse_datatype_string, StructType
-import yaml
-import os
 
 class Ingest:
 
