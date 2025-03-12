@@ -1,21 +1,19 @@
 from pydantic import BaseModel
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql.session import SparkSession
 from pyspark.sql.types import _parse_datatype_string, StructType
-import yaml
-import os
 
 class Ingest:
 
-     def overwrite_delta(self, df : DataFrame, output_path = 'landing_zone') -> None:
+     def overwrite_delta(self, df : DataFrame, partitionBy : str, output_path = 'data\\bronze_layer') -> None:
         """
         Write the dataframe to parquet files
-        in the landing zone.
+        in the bronze layer.
         """
         df.write \
             .option("overwriteSchema", "true") \
             .mode("overwrite") \
             .format("delta") \
+            .partitionBy(partitionBy) \
             .save(output_path)
         
 class IngestConfig(BaseModel):
