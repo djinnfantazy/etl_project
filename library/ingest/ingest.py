@@ -1,9 +1,14 @@
 from pydantic import BaseModel
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.types import _parse_datatype_string, StructType
+from pyspark.sql.functions import current_date
 
 class Ingest:
-
+    
+     @staticmethod
+     def add_metadata_column(df: DataFrame) -> DataFrame:
+        return df.withColumn("_createdOn", current_date())
+     
      def overwrite_delta(self, df : DataFrame, partitionBy : str, output_path = 'data\\bronze_layer') -> None:
         """
         Write the dataframe to parquet files
@@ -15,7 +20,8 @@ class Ingest:
             .format("delta") \
             .partitionBy(partitionBy) \
             .save(output_path)
-        
+
+
 class IngestConfig(BaseModel):
     """ A class used to store config values """
     endpoint: str
