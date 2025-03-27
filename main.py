@@ -34,15 +34,10 @@ df = (
     spark.createDataFrame(
     DictUtils.get_by_path(rest_api_data, ingest_config.json_data_path),
     IngestConfig.get_struct_schema(ingest_config.schema))
-    .withColumn("_createdOn", current_date())
+    .transform(Ingest.add_metadata_column)
     )
 
-df.show(10)
-
 Ingest().overwrite_delta(df = df, partitionBy="publishedAt")
-
-d = spark.read.format("delta").load("data\\bronze_layer")
-d.show(10)
 
 logger.info("Finishing the NewsProject")
 
