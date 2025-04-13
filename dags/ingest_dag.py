@@ -1,16 +1,16 @@
 from airflow import DAG
 from datetime import datetime
-from library.ingest import Ingest
 from airflow.operators.python import PythonOperator
 
-ingest = Ingest()
 
-with DAG('top_headlines', start_date=datetime(2025,3,30), schedule_interval='@daily', catchup=False):
+def ingest_bronze_func():
+    from library.ingest import Ingest
+    ingest = Ingest()
+    ingest.ingest_bronze('news_api', 'top_headlines')
+
+with DAG('top_headlines', start_date=datetime(2025,4,13), schedule_interval='@daily', catchup=False):
     
     ingest_bronze = PythonOperator(
         task_id='ingest_bronze',
-        python_callable=Ingest.ingest_bronze,
-        op_kwargs={
-            'source_name' : 'news_api',
-            'dataset' : 'top_headlines'
-        })
+        python_callable=ingest_bronze_func
+        )
