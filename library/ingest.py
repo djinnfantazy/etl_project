@@ -5,11 +5,10 @@ from pyspark.sql.functions import current_date
 
 from pyspark.sql.session import SparkSession
 from pyspark.sql.functions import current_date
-from logger import Log4j
-from api_extract import NewsApiExtract
-# from ingest import IngestConfig, Ingest
-from config_utils import ConfigUtils
-from utils import DictUtils
+from library.logger import Log4j
+from library.api_extract import NewsApiExtract
+from library.config_utils import ConfigUtils
+from library.utils import DictUtils
 
 from delta.tables import *
 from delta import configure_spark_with_delta_pip
