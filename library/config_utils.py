@@ -3,7 +3,6 @@ from enum import Enum
 import os
 import yaml
 
-
 class RootDir(Enum):
     """Project directories"""
 
@@ -13,15 +12,20 @@ class RootDir(Enum):
     def root_path(cls) -> str:
         """Get project root path"""
 
-        path = os.path.abspath(os.curdir)
+        # path = os.path.abspath(os.curdir)
+        path = os.path.join(os.path.dirname(__file__), '..')
+        path = os.path.abspath(path)
         # path = os.path.dirname(__file__).split(cls.RESOURCES.value)[0].replace("\\", "/")
         return path
 
 
     def abs_path(self) -> str:
         """Get resources path"""
+        # print(f"{self.root_path()}/{self.value}")
+        abs_path = os.path.join(self.root_path(), self.value)
 
-        return f"{self.root_path()}/{self.value}"
+        # return f"{self.root_path()}/{self.value}"
+        return os.path.abspath(abs_path)
 
 
 class ConfigUtils:
@@ -40,9 +44,10 @@ class ConfigUtils:
     def get_resource_yaml_config(path: str) -> dict[str, Any]:
         """Get resource yaml config"""
 
-        full_path = f"{RootDir.RESOURCES.abs_path()}/{path}"
+        # full_path = f"{RootDir.RESOURCES.abs_path()}/{path}"
+        full_path = os.path.join(RootDir.RESOURCES.abs_path(), path)
 
-        return ConfigUtils.get_yaml_config(full_path)
+        return ConfigUtils.get_yaml_config(os.path.abspath(full_path))
 
 
     @staticmethod
