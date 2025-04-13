@@ -6,7 +6,7 @@ from airflow.operators.python import PythonOperator
 def ingest_bronze_func():
     from library.ingest import Ingest
     ingest = Ingest()
-    ingest.ingest_bronze('news_api', 'top_headlines')
+    ingest.ingest_bronze('news_api', 'top-headlines')
 
 with DAG('top_headlines', start_date=datetime(2025,4,13), schedule_interval='@daily', catchup=False):
     
