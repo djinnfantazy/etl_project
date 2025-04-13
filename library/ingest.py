@@ -12,6 +12,7 @@ from library.utils import DictUtils
 
 from delta.tables import *
 from delta import configure_spark_with_delta_pip
+import os
 
 class Ingest:
     
@@ -19,7 +20,10 @@ class Ingest:
      def add_metadata_column(df: DataFrame) -> DataFrame:
         return df.withColumn("_createdOn", current_date())
      
-     def overwrite_delta(self, df : DataFrame, partitionBy : str, output_path = 'data\\bronze_layer') -> None:
+     def overwrite_delta(self, df : DataFrame, partitionBy : str) -> None:
+        
+        output_path =  os.path.join(os.path.dirname(__file__), '..', 'data', 'bronze_layer')
+        
         """
         Write the dataframe to parquet files
         in the bronze layer.
